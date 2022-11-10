@@ -7,22 +7,156 @@
     <title>Ball Sim</title>
 </head>
 <body>
-    
-<h1>Hello World</h1>
-<h2 id="target">Init. Value</h2>
+
+<br>
+<h1>Auto-Cast Binary Converter</h1>
+<br>
+
+<input type="text" id="textBox" value="" style="text-align: right; border-width: 0px; background-color: lightblue"></input>
+
+<button id="enterButton" onclick="computeInput()" style="border-width: 0px; color: black; background-color: orange;border-radius: 5px;">EXEC</button>
+
+<br> 
+<br>
+
+<h2 id="fmtDisplay">-</h2>
+
+<h2 id="resDisplay">-</h2>
+
 <script src="main.js"></script>
 
-    <script>    
+<script> 
 
-        const inpBox = document.createElement("input");
+    const fmtDisplay = document.getElementById("fmtDisplay");
 
-        inpBox.setAttribute("type", "text");
+    const resDisplay = document.getElementById("resDisplay");
+    
+    const inputBox = document.getElementById("textBox");
 
-        inpBox.style.backgroundColor = "gray";
+    // used to size integer inputs, which will presumably vary in size
+    function minBytesNeeded(x) {
 
-        document.body.appendChild(inpBox);
+        var n = 1;
+        var y = x;
 
-    </script>
+        while ((n < 16) && (y >> (n * 8))) n += n;
+
+        return (n > 8) ? 0 : n;
+
+    }
+
+    // returns binary string corresponding to x | 0 <= x <= 0xFF
+    function bitStr(x) {
+
+        let res = "";
+
+        if (x < 0 || x > 0xFF) return res;
+
+        let c = 0x80;
+
+        while (c) {
+
+            res += (c & x) ? '1' : '0';
+
+            c >>= 1;
+
+        }
+
+        return res;
+        
+    }
+
+    function computeInput() {
+
+        let raw = inputBox.value;
+
+        //zero the display and text entry bar contents by default, such that
+        //a NaN result in parsing either format can simply return early
+        inputBox.value = "";
+        resDisplay.innerHTML = "-";
+        fmtDisplay.innerHTML = "(NaN)"
+
+        if (raw.includes('.')) {
+
+            var x = parseFloat(raw);
+
+            if (isNaN(x)) return;
+
+            fmtDisplay.innerHTML = "(FLT)";
+            
+            let s = "";
+
+            //JavaScript "floats" are IEEE754 double-precision 64bit FPNs
+            var bytes = new Float64Array(1);
+
+            bytes[0] = x;
+
+            for (var i = 0; i < 8; i++) {
+
+                bytes[i] = x & 0xFF;
+
+                s += bitStr(bytes[i]);
+
+                s += ' ';
+
+                x >>= 8;
+
+            }
+
+            resDisplay.innerHTML = s;
+
+        } else {
+
+            var x = parseInt(raw);
+
+            if (isNaN(x)) return;
+
+            let c = 0x80;
+
+            resDisplay.innerHTML = "here:";
+
+            let n = minBytesNeeded(x);
+
+            fmtDisplay.innerHTML = "got" + n;
+
+            let bytes = new Uint8Array(n);
+
+            var i;
+
+            let res = "";
+
+            while (i < n) {
+
+                bytes[i++] = 0xFF & x;
+
+                x >>= 8;
+
+            }
+
+            i = n - 1;
+
+            //let res = "";
+
+            while (i > 0) {
+
+                res += (bitStr(bytes[i--]) + " ");
+
+            }
+
+            res += bitStr(bytes[0]);
+
+            resDisplay.innerHTML = res;
+            fmtDisplay.innerHTML = "(INT" + (n * 8) + ")";
+
+        }
+
+    }
+
+
+
+</script>
+
+
 
 </body>
 </html>
