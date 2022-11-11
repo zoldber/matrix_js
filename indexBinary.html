@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ball Sim</title>
+</head>
+<body>
+
+<br>
+<h1>Auto-Cast Binary Converter</h1>
+<br>
+
+<input type="text" id="textBox" value="" style="text-align: right; border-width: 0px; background-color: lightblue"></input>
+
+<button id="enterButton" onclick="computeInput()" style="border-width: 0px; color: black; background-color: orange;border-radius: 5px;">EXEC</button>
+
+<br> 
+<br>
+
+<h2 id="fmtDisplay">-</h2>
+
+<h2 id="resDisplay">-</h2>
+
+<style src="style.css"></style>
+
+<script src="main.js"></script>
+
+<script> 
+
+    const fmtDisplay = document.getElementById("fmtDisplay");
+
+    const resDisplay = document.getElementById("resDisplay");
+    
+    const inputBox = document.getElementById("textBox");
+
+    // used to size integer inputs, which will presumably vary in size
+    function minBytesNeeded(x) {
+
+        let itx = "";
+
+        const bitMask = [
+
+            0xFFFFFFFF00000000, //8 bytes needed
+            0xFFFFFFFFFFFF0000, //4 bytes needed
+            0xFFFFFFFFFFFFFF00, //2 bytes needed
+
+        ];
+
+        const k = x;
+
+        let n = 8;
+
+        //note: 65536 is 0x10000
+
+        for (var i = 0; i < 3; i++) {
+
+            itx += "\n" + (bitMask[i]);
+
+            n >>= 2;
+
+        }
+        
+        resDisplay.innerHTML = itx;
+
+        return 1;
+
+    }
+
+    // returns binary string corresponding to x | 0 <= x <= 0xFF
+    function bitStr(x) {
+
+        let res = "";
+
+        if (x < 0 || x > 0xFF) return res;
+
+        let c = 0x80;
+
+        while (c) {
+
+            res += (c & x) ? '1' : '0';
+
+            c >>= 1;
+
+        }
+
+        return res;
+        
+    }
+
+    function computeInput() {
+
+        let raw = inputBox.value;
+
+        //zero the display and text entry bar contents by default, such that
+        //a NaN result in parsing either format can simply return early
+        inputBox.value = "";
+        resDisplay.innerHTML = "-";
+        fmtDisplay.innerHTML = "(NaN)"
+
+        if (raw.includes('.')) {
+
+            var x = parseFloat(raw);
+
+            if (isNaN(x)) return;
+
+            fmtDisplay.innerHTML = "(FLT)";
+            
+            let s = "";
+
+            //JavaScript "floats" are IEEE754 double-precision 64bit FPNs
+            var bytes = new Float64Array(1);
+
+            bytes[0] = x;
+
+            for (var i = 0; i < 8; i++) {
+
+                bytes[i] = x & 0xFF;
+
+                s += bitStr(bytes[i]);
+
+                s += ' ';
+
+                x >>= 8;
+
+            }
+
+            resDisplay.innerHTML = s;
+
+        } else {
+
+            var x = parseInt(raw);
+
+            if (isNaN(x)) return;
+
+            let c = 0x80;
+
+            let n = minBytesNeeded(x);
+
+            let bytes = new Uint8Array(n);
+
+            var i;
+
+            let res = "";
+
+            while (i < n) {
+
+                bytes[i++] = 0xFF & x;
+
+                x >>= 8;
+
+            }
+
+            i = n - 1;
+
+            //let res = "";
+
+            while (i > 0) {
+
+                res += (bitStr(bytes[i--]) + " ");
+
+            }
+
+            res += bitStr(bytes[0]);
+
+            //resDisplay.innerHTML = res;
+            fmtDisplay.innerHTML = "(INT~i=" + n  + ")";
+
+        }
+
+    }
+
+
+
+</script>
+
+
+
+</body>
+</html>
