@@ -1,3 +1,4 @@
+
 body {
 
     /* save this color, it works well with orane Courier font */
@@ -5,8 +6,38 @@ body {
 
     font-family: Arial, Helvetica, sans-serif, Courier, monospace;
 
+    color: orange;
+
+    margin: 0px;
+
+}
+
+.header {
+
     text-align: center;
 
     color: orange;
 
+}
+
+.canvas {
+
+    background-color: none;
+    border-radius: 16px;
+    border: 1px solid orange;
+
+    height: 512px;
+    width: 512px;
+
+    margin: auto;
+
+}
+
+.content {
+
+    border-radius: 4px;
+    border: none;
+    padding: 7px;
+    cursor: pointer;
+    
 }
