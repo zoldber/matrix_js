@@ -1,6 +1,9 @@
 body {
 
-    background-color: darkslategray;
+    /* save this color, it works well with orane Courier font */
+    background-color: rgb(15, 13, 27);
+
+    font-family: Arial, Helvetica, sans-serif, Courier, monospace;
 
     text-align: center;
 
