@@ -1,3 +1,15 @@
+/*
+
+    Syntax reference:
+
+    body { }
+
+    .A { params: ... } <- means element with class="A", sitting inside of <body></body>
+    #B { params: ... } <- means element with id="B" that's also inside of <body></body>
+
+
+*/
+
 
 body {
 
@@ -20,6 +32,10 @@ body {
 
 }
 
+/*
+    This is an element container and shouldn't have "nodeGraphCanvas"-specific
+    attributes set inside. Works but fix it later
+*/
 .canvas {
 
     background-color: none;
@@ -35,9 +51,15 @@ body {
 
 .content {
 
-    border-radius: 4px;
-    border: none;
-    padding: 7px;
-    cursor: pointer;
-    
+    text-align: center;
+
+    margin: auto;
+
 }
+
+#resetButton {
+
+    text-align: center;
+    background-color: orange;
+}
+
