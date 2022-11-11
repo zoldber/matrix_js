@@ -32,34 +32,50 @@ body {
 
 }
 
-/*
-    This is an element container and shouldn't have "nodeGraphCanvas"-specific
-    attributes set inside. Works but fix it later
-*/
+#debugHeader {
+
+    color: greenyellow;
+
+}
+
+/* GRAPHICAL ELEMENTS (NODES, EDGES ETC.) BELOW */
+
 .canvas {
 
-    background-color: none;
+
+    text-align: center;
+
+    margin: 0px;
+    border-color: aqua;
+
+}
+
+#nodeGraphCanvas {
+
+    width: 80%;
+    height: 100%;
+
     border-radius: 16px;
     border: 1px solid orange;
 
-    height: 512px;
-    width: 512px;
-
-    margin: auto;
-
 }
+
+/* QUANTITATIVE ELEMENTS (COUNTS, PARAMETERS ETC.) BELOW */
 
 .content {
 
     text-align: center;
-
     margin: auto;
 
 }
 
-#resetButton {
+#genButton {
 
+    cursor: pointer;
+    padding: 8px;
     text-align: center;
     background-color: orange;
+
 }
+
 

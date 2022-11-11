@@ -4,6 +4,12 @@
 
 */
 
+function functTest() {
+
+    document.getElementById("nodeGraphCanvas").style.color = "red";
+
+}
+
 class NodeStruct {
 
     constructor(x, y, r) {

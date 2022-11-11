@@ -9,9 +9,14 @@
 </head>
 <body>
 
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="graph.js"></script>
+
     <div class="header">
         <br>
         <h1>Graph Experiment I</h1>
+        <br>
+        <h2 id="debugHeader"> - - - </h2>
         <br>
     </div>
 
@@ -21,9 +26,42 @@
 
     <div class="content">
         <br>
-        <button id="resetButton">RESET</button>
+        <button id="genButton" onclick="initGraph()">GENERATE</button>
         <br>
     </div>
+
+    <!--Note: this is a stand-in for everything within main.js, graph.js, etc. scripts -->
+    <!--      the github codeSpace preview is almost certainly broken when calling them-->
+    
+    <!--    main.js     -->>
+    <script>
+
+        function initGraph() {
+
+            const c = document.getElementById("nodeGraphCanvas");
+
+            const ctx = c.getContext("2d");
+
+            cPos = c.getBoundingClientRect();
+
+            nodeX = cPos.left;
+            nodeY = cPos.top;
+            nodeR = 10;
+
+
+
+            ctx.beginPath();
+
+            ctx.arc(nodeX, nodeY, nodeR, 0, 2.0 * Math.PI, false);
+
+            ctx.strokeStyle = "red";
+
+            ctx.stroke();
+
+        }
+
+    </script>
+
 
 </body>
 
