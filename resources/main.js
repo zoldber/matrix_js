@@ -1,17 +1,3 @@
-const c = document.getElementById("nodeGraphCanvas");
-
-const ctx = c.getContext("2d");
-
-c.style.backgroundColor = "red";
-
-function test() {
-
-    const c = document.getElementById("nodeGraphCanvas");
-  
-    c.style.backgroundColor = "red";
-
-}
-
 function initGraph() {
 
     const c = document.getElementById("nodeGraphCanvas");
