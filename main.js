@@ -1,7 +1,15 @@
+/*
+const button = document.getElementById("execBtn");
+
+const header = document.getElementById("debugHdr");
+
 const canvas = document.getElementById("sceneCanvas");
 
 const ctx = canvas.getContext("2d");
 
-const nodeGraph = new NodeGraph(4);
+function changeHeader() {
 
-nodeGraph.draw(ctx);
+    header.innerHTML = "lol";
+
+}
+*/
