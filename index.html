@@ -2,25 +2,26 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="stylesheet" href="style.css"> 
+    <script src="resources/main.js"></script>
+    <script src="resources/graph.js"></script>
 
-    <script src="main.js"></script>
+    <link rel="stylesheet" href="resources/style.css"> 
 
     <title>GEIV</title>
+
 </head>
 
 <body>
 
-
     <div class="header">
         <br>
-        <h1>Graph Experiment I</h1>
-        <br>
-        <h2 id="debugHeader"> - </h2>
+        <h1>ANT COLONY OPTIMIZATION</h1>
+        <h3 id="nodeCounter"> Nodes: 0</h3>
         <br>
     </div>
 
@@ -30,13 +31,10 @@
 
     <div class="content">
         <br>
-        <button id="genButton" onlcick="test()">GENERATE</button>
-        <br>
+        <button id="nodeRstButton">RESET</button>
+        <button id="nodeGenButton">GENERATE</button>
+        <button id="evalACOButton">EVALUATE</button>
     </div>
-
-    <!--Note: this is a stand-in for everything within main.js, graph.js, etc. scripts -->
-    <!--      the github codeSpace preview is almost certainly broken when calling them-->
-    
 
 </body>
 

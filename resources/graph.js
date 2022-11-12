@@ -4,36 +4,6 @@
 
 */
 
-function initGraph() {
-
-    const c = document.getElementById("nodeGraphCanvas");
-
-    const ctx = c.getContext("2d");
-
-    c.height = 512;
-    c.width = 512;
-
-    r = 10;
-
-    x = 2*r + Math.random() * (c.width - 2*r);
-    y = 2*r + Math.random() * (c.height - 2*r);
-
-    ctx.beginPath();
-
-    ctx.arc(x, y, r, 0, 2.0 * Math.PI, false);
-
-    ctx.fillStyle = "red";
-
-    ctx.lineWidth = 1;
-
-    ctx.strokeStyle = "orange";
-
-    ctx.fill();
-
-    ctx.stroke();
-
-}
-
 class NodeStruct {
 
     constructor(x, y, r) {
@@ -44,19 +14,31 @@ class NodeStruct {
 
     }
 
-    draw(ctx) {
+    drawNode(ctx) {
 
         ctx.beginPath();
 
         ctx.arc(this.x, this.y, this.r, 0, 2.0 * Math.PI, false);
+        
+        ctx.fillStyle = "orange";
     
-        ctx.lineWidth = 2;
-    
-        ctx.strokStyle = "orange";
-    
-        ctx.stroke();
-
         ctx.fill();
+
+    }
+
+    drawEdge(nextNode, ctx) {
+
+        ctx.beginPath();
+
+        ctx.moveTo(this.x, this.y);
+    
+        ctx.lineWidth = 1;
+    
+        ctx.strokeStyle = "purple";
+    
+        ctx.lineTo(nextNode.x, nextNode.y);
+
+        ctx.stroke();
 
     }
 
@@ -64,29 +46,48 @@ class NodeStruct {
 
 class NodeGraph {
 
-    constructor(n) {
+    constructor(cnv) {
 
+        this.ctx = cnv.getContext("2d");
+
+        this.w = cnv.width;
+        this.h = cnv.height;
+
+        this.maxNodes = 5;
         this.nodes = [];
-
-        xRand = 128;
-        yRand = 128;
-        radius = 64;
-
-        let node = new Node(xRand, yRand, radius);
-
-        for (var i = 0; i < n; i++) {
-
-            this.nodes.push(node);
-
-        }
 
     }
 
-    draw(ctx) {
+    genNewRandom() {
 
-        for (node in this.nodes) {
+        // padding defined as percentage, change later:
+        let x = (0.8 * Math.random() * this.w) + (0.1 * this.w);
+        let y = (0.8 * Math.random() * this.h) + (0.1 * this.h);
 
-            node.draw(ctx);
+        this.nodes.push(new NodeStruct(x, y, 8));
+
+    }
+
+    // note: loops are split up on purpose, as edge color won't be the same
+    // and nodes will have to be generated in one sweep after all edges are
+    updateDisp() {
+
+        var i, j;
+
+        for (i = 0; i < this.nodes.length; i++) {
+
+            // connect to all previous nodes drawn in graph
+            for (j = 0; j < i; j++) {
+
+                this.nodes[i].drawEdge(this.nodes[j], this.ctx);
+
+            }
+
+        }
+
+        for (i = 0; i < this.nodes.length; i++) {
+
+            this.nodes[i].drawNode(this.ctx);
 
         }
 

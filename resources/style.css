@@ -13,7 +13,7 @@
 
 body {
 
-    /* save this color, it works well with orane Courier font */
+    /* save this color, it works well with orange Courier font */
     background-color: rgb(15, 13, 27);
 
     font-family: Arial, Helvetica, sans-serif, Courier, monospace;
@@ -44,7 +44,6 @@ body {
 
 
     text-align: center;
-
     margin: 0px;
 
 }
@@ -65,13 +64,39 @@ body {
 
 }
 
-#genButton {
+#nodeRstButton {
 
     cursor: pointer;
+    width: 128px;
     padding: 8px;
     text-align: center;
     background-color: orange;
+    border-radius: 4px;
+    border: none;
 
 }
 
+#nodeGenButton {
+
+    cursor: pointer;
+    width: 128px;
+    padding: 8px;
+    text-align: center;
+    background-color: orange;
+    border-radius: 4px;
+    border: none;
+
+}
+
+#evalACOButton {
+
+    cursor: pointer;
+    width: 128px;
+    padding: 8px;
+    text-align: center;
+    background-color: orange;
+    border-radius: 4px;
+    border: none;
+
+}
 

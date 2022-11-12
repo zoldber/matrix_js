@@ -1,29 +1,66 @@
+window.onload = initGraph;
+
+let cnv = null;
+
+let graph = null;
+
+let nodeCounter = null;
+
 function initGraph() {
 
-    const c = document.getElementById("nodeGraphCanvas");
+    console.log("initializing...");
 
-    const ctx = c.getContext("2d");
+    cnv = document.getElementById("nodeGraphCanvas");
+    cnv.height = 512;
+    cnv.width = 512;
 
-    c.height = 512;
-    c.width = 512;
+    // generate with canvas reference instead of derived 2d context for now
+    graph = new NodeGraph(cnv);
 
-    r = 10;
+    nodeCounter = document.getElementById("nodeCounter");
 
-    x = 2*r + Math.random() * (c.width - 2*r);
-    y = 2*r + Math.random() * (c.height - 2*r);
+    var nodeRstButton = document.getElementById("nodeRstButton");
 
-    ctx.beginPath();
+    var nodeGenButton = document.getElementById("nodeGenButton");
 
-    ctx.arc(x, y, r, 0, 2.0 * Math.PI, false);
+    var evalACOButton = document.getElementById("evalACOButton");
 
-    ctx.fillStyle = "red";
 
-    ctx.lineWidth = 1;
+    if (nodeGenButton) {
 
-    ctx.strokeStyle = "aqua";
+        nodeRstButton.addEventListener("click", resetGraph);
 
-    ctx.fill();
+        nodeGenButton.addEventListener("click", addNode);
 
-    ctx.stroke();
+
+
+    }
 
 }
+
+function addNode() {
+
+    if (graph.nodes.length < 10) {
+
+        graph.genNewRandom();
+
+        graph.updateDisp();
+
+        nodeCounter.innerHTML = "Nodes: " + graph.nodes.length;
+
+    }
+
+}
+
+function resetGraph() {
+
+    while(graph.nodes.length > 0) graph.nodes.pop();
+
+    // refreshes canvas
+    cnv.height = 512;
+    cnv.width = 512;
+
+    nodeCounter.innerHTML = "Nodes: " + graph.nodes.length;
+
+}
+
