@@ -58,15 +58,54 @@ class NodeGraph {
 
     }
 
-    genNewRandom() {
 
-        // padding defined as percentage, change later:
-        let x = (0.8 * Math.random() * this.w) + (0.1 * this.w);
-        let y = (0.8 * Math.random() * this.h) + (0.1 * this.h);
+
+    #nodeOverlap(x, y, k) {
+
+        let dist = 0;
+
+        for (var i = 0; i < this.nodes.length; i++) {
+
+            dist = Math.sqrt(Math.pow(x - this.nodes[i].x, 2) + Math.pow(y - this.nodes[i].y, 2));
+
+            console.log(dist);
+
+            if (dist < k) return true;
+
+        }
+
+        return false;
+
+    }
+
+    //s = scale (e.g. the window dimension that the value must exist within), p = margin percentage
+    #boundRandom(dim, p) {
+
+        p = (0 < p <= 1) ? p : 0.8;
+
+        let margin = (1 - p) / 2;
+
+        return (p * Math.random() * dim) + (margin * dim);
+
+    }
+
+    genNewRandomized() {
+
+        let x = this.#boundRandom(this.w, 0.8);
+        let y = this.#boundRandom(this.h, 0.8);
+
+        while (this.#nodeOverlap(x, y, 30)) {
+
+            x = this.#boundRandom(this.w, 0.8);
+            y = this.#boundRandom(this.h, 0.8);    
+
+        }
 
         this.nodes.push(new NodeStruct(x, y, 8));
 
     }
+
+    
 
     // note: loops are split up on purpose, as edge color won't be the same
     // and nodes will have to be generated in one sweep after all edges are

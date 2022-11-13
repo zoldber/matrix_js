@@ -42,7 +42,7 @@ function addNode() {
 
     if (graph.nodes.length < 10) {
 
-        graph.genNewRandom();
+        graph.genNewRandomized();
 
         graph.updateDisp();
 
