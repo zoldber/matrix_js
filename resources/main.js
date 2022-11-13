@@ -14,8 +14,8 @@ function initGraph() {
     cnv.height = 512;
     cnv.width = 512;
 
-    // generate with canvas reference instead of derived 2d context for now
-    graph = new NodeGraph(cnv);
+    // args are canvas ref, maxNodes
+    graph = new NodeGraph(cnv, 10);
 
     nodeCounter = document.getElementById("nodeCounter");
 
@@ -32,7 +32,7 @@ function initGraph() {
 
         nodeGenButton.addEventListener("click", addNode);
 
-
+        evalACOButton.addEventListener("click", simulate);
 
     }
 
@@ -40,7 +40,7 @@ function initGraph() {
 
 function addNode() {
 
-    if (graph.nodes.length < 10) {
+    if (graph.nodes.length < graph.maxNodes) {
 
         graph.genNewRandomized();
 
@@ -56,11 +56,21 @@ function resetGraph() {
 
     while(graph.nodes.length > 0) graph.nodes.pop();
 
+    while(graph.distMatrix.length > 0) graph.distMatrix.pop();
+
     // refreshes canvas
     cnv.height = 512;
     cnv.width = 512;
 
     nodeCounter.innerHTML = "Nodes: " + graph.nodes.length;
+
+}
+
+function simulate() {
+
+    graph.fillDistMatrix();
+
+    graph.executeACO(1, 1, 0.1, 50, 5);
 
 }
 
