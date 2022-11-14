@@ -44,7 +44,7 @@ function addNode() {
 
         graph.genNewRandomized();
 
-        graph.updateDisp();
+        graph.drawAll();
 
         nodeCounter.innerHTML = "Nodes: " + graph.nodes.length;
 
@@ -56,11 +56,7 @@ function resetGraph() {
 
     while(graph.nodes.length > 0) graph.nodes.pop();
 
-    while(graph.distMatrix.length > 0) graph.distMatrix.pop();
-
-    // refreshes canvas
-    cnv.height = 512;
-    cnv.width = 512;
+    graph.clearDisp();
 
     nodeCounter.innerHTML = "Nodes: " + graph.nodes.length;
 
@@ -68,9 +64,17 @@ function resetGraph() {
 
 function simulate() {
 
-    graph.fillDistMatrix();
+    if (graph.nodes.length < 4) {
 
-    graph.executeACO(1, 1, 0.1, 50, 5);
+        console.log("Generate at least 4 nodes before computing");
+
+        return;
+
+    }
+
+    const model = new ACOModel(graph);
+
+    model.evaluate(0, 0, 0, 1, 3);
 
 }
 

@@ -1,44 +1,52 @@
 /*
 
-    Holds node objects / utilities
+    Holds nodes and plotting methods *only*
+
+    This should be as sparse as possible, and should be passed to an ACOModel
+    class that will facilitate actual computation and parameter storage. Only
+    exception is nodeDistance() which is used for avoiding overlap during gen
 
 */
 
+// currently this class is purely graphical, re-evaluate its implementation
 class NodeStruct {
 
-    constructor(x, y, r) {
+    constructor(x, y, r, ctx) {
 
         this.x = x;
         this.y = y;
         this.r = r;
+        this.ctx = ctx;
+
+        console.log(this.ctx);
 
     }
 
-    drawNode(ctx) {
+    drawNode(color) {
 
-        ctx.beginPath();
+        this.ctx.beginPath();
 
-        ctx.arc(this.x, this.y, this.r, 0, 2.0 * Math.PI, false);
+        this.ctx.arc(this.x, this.y, this.r, 0, 2.0 * Math.PI, false);
         
-        ctx.fillStyle = "orange";
+        this.ctx.fillStyle = color;
     
-        ctx.fill();
+        this.ctx.fill();
 
     }
 
-    drawEdge(nextNode, ctx) {
+    drawEdge(nextNode, color) {
 
-        ctx.beginPath();
+        this.ctx.beginPath();
 
-        ctx.moveTo(this.x, this.y);
+        this.ctx.moveTo(this.x, this.y);
     
-        ctx.lineWidth = 1;
+        this.ctx.lineWidth = 1;
     
-        ctx.strokeStyle = "purple";
+        this.ctx.strokeStyle = color;
     
-        ctx.lineTo(nextNode.x, nextNode.y);
+        this. ctx.lineTo(nextNode.x, nextNode.y);
 
-        ctx.stroke();
+        this.ctx.stroke();
 
     }
 
@@ -52,14 +60,10 @@ class NodeGraph {
 
         this.w = cnv.width;
         this.h = cnv.height;
-
+ 
         this.maxNodes = maxNodes;
         this.nodes = [];
-
-        this.distMatrix = [];
-
-        this.ants = [];
-
+        
     }
 
     #nodeDistance(nodeA, nodeB) {
@@ -67,7 +71,6 @@ class NodeGraph {
         return Math.sqrt(Math.pow(nodeA.x - nodeB.x, 2) + Math.pow(nodeA.y - nodeB.y, 2));
 
     }
-
 
     #nodeOverlap(node, k) {
 
@@ -92,11 +95,6 @@ class NodeGraph {
 
     }
 
-    // selects 
-    #chooseNextNode(currNode, a, b, dMean) {
-
-    }
-
     // places a non-overlapping node within page canvas and appends it to node list
     // note: while it's tempting to fill the distance matrix here because dist. is
     // calculated anyway, don't. This would require dynamic [n x n] sizing of the
@@ -106,10 +104,10 @@ class NodeGraph {
         let x = this.#boundRandom(this.w, 0.8);
         let y = this.#boundRandom(this.h, 0.8);
 
-        let node = new NodeStruct(x, y, 8);
+        let node = new NodeStruct(x, y, 8, this.ctx);
 
         // if overlap detected, update coordinates until valid
-        while (this.#nodeOverlap(node, 64)) {
+        while (this.#nodeOverlap(node, 256)) {
 
             node.x = this.#boundRandom(this.w, 0.8);
             node.y = this.#boundRandom(this.h, 0.8);    
@@ -122,7 +120,7 @@ class NodeGraph {
 
     // note: loops are split up on purpose, as edge color won't be the same
     // and nodes will have to be generated in one sweep after all edges are
-    updateDisp() {
+    drawAll() {
 
         var i, j;
 
@@ -131,7 +129,7 @@ class NodeGraph {
             // connect to all previous nodes drawn in graph
             for (j = 0; j < i; j++) {
 
-                this.nodes[i].drawEdge(this.nodes[j], this.ctx);
+                this.nodes[i].drawEdge(this.nodes[j], "purple");
 
             }
 
@@ -139,43 +137,17 @@ class NodeGraph {
 
         for (i = 0; i < this.nodes.length; i++) {
 
-            this.nodes[i].drawNode(this.ctx);
+            this.nodes[i].drawNode("orange");
 
         }
 
     }
 
-    // see above
-    fillDistMatrix() {
+    // refreshes canvas
+    clearDisp() {
 
-        //tmp row buffer
-        let row = [];
-
-        for (var i = 0; i < this.nodes.length; i++) {
-
-            for (var j = 0; j < this.nodes.length; j++) {
-
-                // use of ternary to force a 0 is probably overkill, but need exact
-                // zero value when executing ACO to avoid divergence (avoid flp errors)
-                row.push((i == j) ? 0 : this.#nodeDistance(this.nodes[i], this.nodes[j]));
-
-            }
-
-            this.distMatrix.push(row);
-
-            console.log(row);
-
-            row = [];
-
-        }
-
-    }
-
-    executeACO(alpha, beta, rho, numEpochs, numAnts) {
-
-        // 'ants' stores indices corresponding to this.nodes
-        let ants = [];
-        let bestPath = null;
+        cnv.height = 512;
+        cnv.width = 512;
 
     }
 
