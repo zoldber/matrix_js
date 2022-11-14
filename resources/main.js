@@ -20,19 +20,21 @@ function initGraph() {
     nodeCounter = document.getElementById("nodeCounter");
 
     var nodeRstButton = document.getElementById("nodeRstButton");
-
     var nodeGenButton = document.getElementById("nodeGenButton");
-
     var evalACOButton = document.getElementById("evalACOButton");
 
 
-    if (nodeGenButton) {
-
+    if (nodeRstButton && nodeGenButton && evalACOButton) {
+        
         nodeRstButton.addEventListener("click", resetGraph);
-
         nodeGenButton.addEventListener("click", addNode);
-
         evalACOButton.addEventListener("click", simulate);
+
+    } else {
+
+        console.log("Missing expected config button(s)");
+
+        return;
 
     }
 
@@ -73,6 +75,8 @@ function simulate() {
     }
 
     const model = new ACOModel(graph);
+
+
 
     model.evaluate(0, 0, 0, 3, 3);
 

@@ -25,6 +25,11 @@ class ACOModel {
 
     constructor(graph) {
 
+        // these parameters are set via evaluate() method
+        this.alpha = 0;
+        this.beta = 0;
+        this.rho = 0;
+
         this.ants = [];
 
         this.graph = graph;
@@ -74,7 +79,52 @@ class ACOModel {
 
     }
 
-    #calcStartPoints(n) {
+    // given an ant class, and using this.edgeMatrix, calculate weights for all valid edges,
+    // choose an edge from the resultant weighted prob array, and return index of next node
+    #chooseNext(ant) {
+        // array of probabilities correpsonding to valid edge choices at current node
+        let probs = [];
+        var p = 0;
+        var s = 0;
+
+        const n = ant.choices.length;
+
+        for (var c = 0; c < n; c++) {
+
+            p = this.edgeMatrix[ant.pos][ant.choices[c]].weight(this.alpha, this.beta, this.avgDist);
+            s += p;
+            probs.push(p);
+
+        }
+
+        // normalize probabilities of valid edge choices
+        for (var c = 0; c < n; c++) {
+
+            probs[c] /= s;
+
+        }
+
+        // javascript doesn't have native support for random normal Gaussian selection
+        //  given a weighted list, found this on StackOverflow
+        let r = Math.random();
+
+        s = 0;
+
+        // cumulative weights
+        let cw = probs.map(x => s += x);
+
+        for (var i = 0; i < n; i++) {
+
+            if (cw[i] > r) return i;
+
+        }
+
+
+
+    }
+
+    // returns random list of N unique indices to start ants at (generated for each epoch)
+    #genStartPoints(n) {
 
         // list of valid start points
         let uniqueIndices = [...Array(this.nodes.length).keys()];
@@ -89,8 +139,6 @@ class ACOModel {
         // 1. create ants, clear edge lines in canvas for demo
         graph.clearDisp();
 
-        for (i = 0; i < this.nodes.length; i++) this.nodes[i].drawNode("orange");
-
         for (i = 0; i < n; i++) {
 
             j = Math.floor(Math.random() * uniqueIndices.length);
@@ -98,25 +146,6 @@ class ACOModel {
             startIndex = uniqueIndices[j];
 
             uniqueIndices.splice(j, 1);   // remove 1 element at index j
-
-            // fix: line below used to be .nodes[j] which caused a lot
-            //      of grief before realizing index j was being found
-            //      as an index within a shrinking array and passed
-            //      to a node array of fixed length, hence, for
-            //      uniqueIndices = {1, 2, 3, 4, 5}
-            //      ~ randomizer picks j = 1, removes '2'
-            //      ~ ~ nodes[j].draw() = nodes[1].draw();
-            //      uniqueIndices = {1, 3, 4, 5}
-            //      ~ randomizer picks j = 1, removes '3'
-            //      ~ ~ nodes[j].draw() = nodes[1].draw();
-            //      uniqueIndices = {1, 4, 5}
-            //      ~ randomizer picks j = 1, removes '4'
-            //      ~ ~ nodes[j].draw() = nodes[1].draw();
-            //
-            //      which color highlights the same invalid starting point j='1'
-            //      three times over. Because this was randomly chosen, it only
-            //      happened occasionally and rarely ever >2 times in one run
-            //      so (n - 1) highlighted node would *occasionally* be seen 
 
             startIndices.push(startIndex);
 
@@ -151,31 +180,50 @@ class ACOModel {
 
             console.log("ant limit exceeded, initialize fewer ants than nodes");
 
-            validConfig = false;
+            return;
 
         }
+
+        this.alpha = alpha;
+        this.beta = beta;
+        this.rho = rho;
 
         // epoch index
         // ant index
         // starting points generated via even distribution for each epoch
-        var epoch, ant, sp = [];
+        var epoch, a, sp = [];
+
+        var i, j, k;
 
         // note: this isn't the same as initializing the ants at the start of each epoch
         
-        for (ant = 0; ant < numAnts; ant++) this.ants.push(new Ant(this.graph, alpha, beta, this.avgDist));
+        for (a = 0; a < numAnts; a++) this.ants.push(new Ant(this.graph));
 
         // run desired number of tours
         for (epoch = 0; epoch < numEpochs; epoch++) {
 
-            sp = this.#calcStartPoints(numAnts);
+            sp = this.#genStartPoints(numAnts);
 
             console.log("EPOCH: " + epoch);
 
-            for (ant = 0; ant < numAnts; ant++) {
+            for (i = 0; i < this.nodes.length; i++) this.nodes[i].drawNode("orange");
 
-                this.nodes[sp[ant]].circleNode("aqua");
-                this.ants[ant].initAtNodeIndex(sp[ant]);
-                this.ants[ant].traverseGraph();
+            for (a = 0; a < numAnts; a++) {
+
+                this.nodes[sp[a]].circleNode("aqua");
+                this.ants[a].initAtNodeIndex(sp[a]);
+                
+                while(this.ants[a].choices.length > 0) {
+
+                    let ci = this.#chooseNext(this.ants[a]);
+
+                    let choice = this.ants[a].choices[ci];
+                    console.log("chose: ch[" + ci + "] = node #" + choice);
+
+                    // remove traversed index from choices
+                    this.ants[a].choices.splice(ci, 1); 
+
+                }
 
             }
 
