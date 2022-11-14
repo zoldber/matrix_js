@@ -18,8 +18,6 @@ class NodeStruct {
         this.r = r;
         this.ctx = ctx;
 
-        console.log(this.ctx);
-
     }
 
     drawNode(color) {
@@ -68,7 +66,9 @@ class NodeGraph {
 
     #nodeDistance(nodeA, nodeB) {
 
-        return Math.sqrt(Math.pow(nodeA.x - nodeB.x, 2) + Math.pow(nodeA.y - nodeB.y, 2));
+        let dist = Math.sqrt(Math.pow(nodeA.x - nodeB.x, 2) + Math.pow(nodeA.y - nodeB.y, 2));
+
+        return dist;
 
     }
 
@@ -76,7 +76,7 @@ class NodeGraph {
 
         for (var i = 0; i < this.nodes.length; i++) {
 
-            if (this.#nodeDistance(node.x, node.y, this.nodes[i]) < k) return true;
+            if (this.#nodeDistance(node, this.nodes[i]) < k) return true;
 
         }
 
@@ -107,7 +107,7 @@ class NodeGraph {
         let node = new NodeStruct(x, y, 8, this.ctx);
 
         // if overlap detected, update coordinates until valid
-        while (this.#nodeOverlap(node, 256)) {
+        while (this.#nodeOverlap(node, 32)) {
 
             node.x = this.#boundRandom(this.w, 0.8);
             node.y = this.#boundRandom(this.h, 0.8);    
