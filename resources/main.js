@@ -74,7 +74,7 @@ function simulate() {
 
     const model = new ACOModel(graph);
 
-    model.evaluate(0, 0, 0, 1, 3);
+    model.evaluate(0, 0, 0, 3, 3);
 
 }
 

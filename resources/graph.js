@@ -32,6 +32,20 @@ class NodeStruct {
 
     }
 
+    circleNode(color) {
+
+        this.ctx.beginPath();
+
+        this.ctx.arc(this.x, this.y, 2.0 * this.r, 0, 2.0 * Math.PI, false);
+        
+        this.ctx.strokeWidth = 2;
+
+        this.ctx.strokeStyle = color;
+    
+        this.ctx.stroke();
+
+    }
+
     drawEdge(nextNode, color) {
 
         this.ctx.beginPath();
