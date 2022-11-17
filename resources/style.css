@@ -64,18 +64,6 @@ body {
 
 }
 
-#nodeRstButton {
-
-    cursor: pointer;
-    width: 128px;
-    padding: 8px;
-    text-align: center;
-    background-color: orange;
-    border-radius: 4px;
-    border: none;
-
-}
-
 #nodeGenButton {
 
     cursor: pointer;
@@ -94,9 +82,33 @@ body {
     width: 128px;
     padding: 8px;
     text-align: center;
-    background-color: orange;
+    background-color: mediumaquamarine;
     border-radius: 4px;
     border: none;
+
+}
+
+#nodeRstButton {
+
+    cursor: pointer;
+    width: 128px;
+    padding: 8px;
+    text-align: center;
+    background-color: salmon;
+    border-radius: 4px;
+    border: none;
+
+}
+
+#clrPlotButton {
+
+    cursor: pointer;
+    width: 128px;
+    padding: 8px;
+    text-align: center;
+    background-color: salmon;
+    border-radius: 4px;
+    border: none;    
 
 }
 

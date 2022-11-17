@@ -32,15 +32,15 @@ class NodeStruct {
 
     }
 
-    circleNode() {
+    circleNode(color) {
 
         this.ctx.beginPath();
 
         this.ctx.arc(this.x, this.y, 2.0 * this.r, 0, 2.0 * Math.PI, false);
         
-        this.ctx.strokeWidth = 2;
+        this.ctx.strokeWidth = 1;
 
-        this.ctx.strokeStyle = "aqua";
+        this.ctx.strokeStyle = color;
     
         this.ctx.stroke();
 
@@ -50,19 +50,19 @@ class NodeStruct {
 
         this.ctx.fillStyle = "aqua";
 
-        this.ctx.font = "25px";
+        this.ctx.font = "12px Arial";
 
-        this.ctx.fillText(text, this.x + 16, this.y + 16);
+        this.ctx.fillText(text, this.x + 8, this.y + 8);
 
     }
 
-    drawEdge(nextNode, color) {
+    drawEdge(nextNode, color, width) {
 
         this.ctx.beginPath();
 
         this.ctx.moveTo(this.x, this.y);
     
-        this.ctx.lineWidth = 1;
+        this.ctx.lineWidth = width;
     
         this.ctx.strokeStyle = color;
     
@@ -153,7 +153,7 @@ class NodeGraph {
             // connect to all previous nodes drawn in graph
             for (j = 0; j < i; j++) {
 
-                this.nodes[i].drawEdge(this.nodes[j], "purple");
+                this.nodes[i].drawEdge(this.nodes[j], "purple", 1);
 
             }
 

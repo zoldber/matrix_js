@@ -140,9 +140,6 @@ class ACOModel {
 
         var startIndex;
 
-        // 1. create ants, clear edge lines in canvas for demo
-        graph.clearDisp();
-
         for (i = 0; i < n; i++) {
 
             j = Math.floor(Math.random() * uniqueIndices.length);
@@ -198,7 +195,6 @@ class ACOModel {
         var i, j, k;
 
         // note: this isn't the same as initializing the ants at the start of each epoch
-        
         for (a = 0; a < numAnts; a++) this.ants.push(new Ant(this.graph));
 
         // run desired number of tours
@@ -210,9 +206,7 @@ class ACOModel {
 
             // BEGIN ONE PASS {
             for (a = 0; a < numAnts; a++) {
-
-                this.nodes[sp[a]].circleNode();
-                this.nodes[sp[a]].labelNode(a);
+                                
                 this.ants[a].initAtNodeIndex(sp[a]);
                 
                 // while the ant has a nonzero destination list (choices[]),
@@ -237,7 +231,10 @@ class ACOModel {
                     this.ants[a].tourPath.push(chosenEdge);
                     this.ants[a].choices.splice(c, 1);
                     this.ants[a].tourDist += chosenEdge.dist;
-                    this.graph.nodes[this.ants[a].pos].drawEdge(this.graph.nodes[choice], "aqua");
+
+                    // TODO: THIS IS WHERE ANTS DRAW LINES
+                    //this.graph.nodes[this.ants[a].pos].drawEdge(this.graph.nodes[choice], "gray", 1);
+                    
                     this.ants[a].pos = choice;
                     
                 }
@@ -262,15 +259,13 @@ class ACOModel {
 
                     this.bestPath = this.ants[a].tourPath;
 
+                    this.perfLog.push(new Point(((epoch * numAnts) + a), this.minDist));
+
                 }
 
             }
 
-            this.perfLog.push([epoch, this.minDist]);
-
         }
-
-        return [this.bestPath, this.perfLog];
 
     }
 
