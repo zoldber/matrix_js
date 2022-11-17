@@ -39,6 +39,8 @@ class ACOModel {
         this.avgDist = 0;
         this.minDist = 0;
 
+        this.bestPath = null;
+
         // initialize edge matrix, compute avg dist
         this.edgeMatrix = [];
 
@@ -52,7 +54,10 @@ class ACOModel {
 
             for (j = 0; j < n; j++) {
 
-                row.push((i == j) ? null : new Edge(this.nodes[i], this.nodes[j]));
+                // TODO: REPLACE ME!!! 
+                // updated to fix general-case scaling for pheromones, where null would be accessed
+                // row.push((i == j) ? null : new Edge(this.nodes[i], this.nodes[j]));
+                row.push(new Edge(this.nodes[i], this.nodes[j]));
 
             }
 
@@ -76,6 +81,24 @@ class ACOModel {
 
         console.log("sum dist = " + this.minDist);
         console.log("avg dist = " + this.avgDist);
+
+    }
+
+    DEBUGPRINTPHERO() {
+
+        const n = this.edgeMatrix.length;
+
+        console.log("- - - PHEROMONE VALS:");
+
+        for (var r = 0; r < n; r++) {
+
+            for (var c = 0; c < n; c++) {
+
+                console.log(this.edgeMatrix[r][c].phero);
+
+            }
+            
+        }
 
     }
 
@@ -119,7 +142,7 @@ class ACOModel {
 
         }
 
-
+        return 0;   // fault condition
 
     }
 
@@ -155,6 +178,7 @@ class ACOModel {
 
     }
 
+    // global update (decay) of pheromones
     #updateEdgeMatrixPheromones(rho) {
 
         var r, c;
@@ -165,7 +189,8 @@ class ACOModel {
 
             for (c = 0; c < n; c++) {
 
-                this.edgeMatrix[r][c] *= (1 - rho);
+                this.edgeMatrix[r][c].phero *= (1.0 - rho);
+                this.edgeMatrix[c][r].phero *= (1.0 - rho);
 
             }
 
@@ -173,16 +198,12 @@ class ACOModel {
 
     }
 
+    // WARNING! DIFFERENCE BETWEEN C AND CHOICE IN CODE BLOCK BELOW:
+    // C is a sub-index guarenteed to fall within a shrinking ant.choices[]
+    // IT SHOULDN'T BE USE FOR ANYTHING BUT FETCHING ant.choices[c], which
+    // is the true index of the node in question
+
     evaluate(alpha, beta, rho, numEpochs, numAnts) {
-
-        // 0. arg checks
-        if (numAnts >= this.nodes.length) {
-
-            console.log("ant limit exceeded, initialize fewer ants than nodes");
-
-            return;
-
-        }
 
         this.alpha = alpha;
         this.beta = beta;
@@ -204,32 +225,81 @@ class ACOModel {
 
             sp = this.#genStartPoints(numAnts);
 
-            console.log("EPOCH: " + epoch);
-
             for (i = 0; i < this.nodes.length; i++) this.nodes[i].drawNode("orange");
+
+            // BEGIN ONE PASS {
+            for (a = 0; a < numAnts; a++) {
+
+                this.nodes[sp[a]].circleNode();
+                this.nodes[sp[a]].labelNode(a);
+                this.ants[a].initAtNodeIndex(sp[a]);
+                
+                // while the ant has a nonzero destination list (choices[]),
+                //  - choose from weighted edges in aforementioned dest. list
+                //  - goTo(choice)
+                //  - - update ant.pos to choice
+                //  - - add choice to visited list
+                //  - - remove choice from dest. list
+                //  - - add distance of edge traversal to ant.tourDist
+                //  - 
+                while(this.ants[a].choices.length > 0) {
+
+                    // chooseNext() is a function of alpha and beta, but they're assumed to
+                    // be static members of edgeMatrix, and hence are pulled from its scope
+                    let c = this.#chooseNext(this.ants[a]);
+
+                    let choice = this.ants[a].choices[c];
+
+                    let chosenEdge = this.edgeMatrix[this.ants[a].pos][choice];
+
+                    // add traversed node index to path, set .pos to it, remove it from ant's choices
+                    this.ants[a].tourPath.push(chosenEdge);
+                    this.ants[a].choices.splice(c, 1);
+                    this.ants[a].tourDist += chosenEdge.dist;
+                    this.graph.nodes[this.ants[a].pos].drawEdge(this.graph.nodes[choice], "aqua");
+                    this.ants[a].pos = choice;
+                    
+                }
+
+                //AFTER LOOPING, DO ONE FINAL EDGE TRAVERSAL TO GO BACK TO START NODE
+                let chosenEdge = this.edgeMatrix[this.ants[a].pos][sp[a]];
+                this.ants[a].tourPath.push(chosenEdge);
+                this.ants[a].tourDist += chosenEdge.dist;
+            
+            }
+            // } END ONE PASS
+
+            this.#updateEdgeMatrixPheromones(this.rho);
 
             for (a = 0; a < numAnts; a++) {
 
-                this.nodes[sp[a]].circleNode("aqua");
-                this.ants[a].initAtNodeIndex(sp[a]);
-                
-                while(this.ants[a].choices.length > 0) {
+                this.ants[a].updateTourPheromones(this.minDist / numAnts);
 
-                    let ci = this.#chooseNext(this.ants[a]);
+                if (this.ants[a].tourDist < this.minDist) {
 
-                    let choice = this.ants[a].choices[ci];
-                    console.log("chose: ch[" + ci + "] = node #" + choice);
+                    this.minDist = this.ants[a].tourDist;
 
-                    // remove traversed index from choices
-                    this.ants[a].choices.splice(ci, 1); 
+                    this.bestPath = this.ants[a].tourPath;
+
+                    console.log("- - Updated min. distance: " + this.minDist);
 
                 }
 
             }
 
+        }
 
+        this.graph.clearDisp();
+
+        for (var e = 0; e < this.bestPath.length; e++) {
+
+            let A = this.bestPath[e].n1;
+            let B = this.bestPath[e].n2;
+
+            A.drawEdge(B, "pink");
 
         }
+
 
     }
 

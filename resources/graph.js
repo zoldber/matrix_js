@@ -32,7 +32,7 @@ class NodeStruct {
 
     }
 
-    circleNode(color) {
+    circleNode() {
 
         this.ctx.beginPath();
 
@@ -40,9 +40,19 @@ class NodeStruct {
         
         this.ctx.strokeWidth = 2;
 
-        this.ctx.strokeStyle = color;
+        this.ctx.strokeStyle = "aqua";
     
         this.ctx.stroke();
+
+    }
+
+    labelNode(text) {
+
+        this.ctx.fillStyle = "aqua";
+
+        this.ctx.font = "25px";
+
+        this.ctx.fillText(text, this.x + 16, this.y + 16);
 
     }
 

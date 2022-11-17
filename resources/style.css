@@ -55,9 +55,9 @@ body {
 
 }
 
-/* QUANTITATIVE ELEMENTS (COUNTS, PARAMETERS ETC.) BELOW */
+/* CONTROL ELEMENTS (COUNTS, PARAMETERS ETC.) BELOW */
 
-.content {
+.controls {
 
     text-align: center;
     margin: auto;
@@ -100,3 +100,16 @@ body {
 
 }
 
+.results {
+
+    text-align: center;
+    margin: auto;
+
+}
+
+#acoResultPlot {
+
+    border-radius: 16px;
+    border: 1px solid orange;
+
+}

@@ -21,8 +21,6 @@ class Ant {
 
     initAtNodeIndex(idx) {
 
-        console.log("- - ant spawned ant at index: " + idx);
-
         // start at idx
         this.pos = idx;
 
@@ -30,12 +28,24 @@ class Ant {
         this.tourDist = 0;
 
         // reset tour
-        this.tourPath = [idx];
+        this.tourPath = []; // <- changed after path storage was updated to edges instead of node indices
 
         // (re)create list of valid choices (i.e. un-visited nodes)
         for (var i = 0; i < this.graph.nodes.length; i++) {
 
             if (i != idx) this.choices.push(i);
+
+        }
+
+    }
+
+    updateTourPheromones(strength) {
+
+        for (var e = 0; e < this.tourPath.length; e++) {
+
+            let addedPheromone = strength / this.tourDist;
+
+            this.tourPath[e].phero += addedPheromone;
 
         }
 
