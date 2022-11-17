@@ -39,6 +39,8 @@ class ACOModel {
         this.avgDist = 0;
         this.minDist = 0;
 
+        this.perfLog = [];
+
         this.bestPath = null;
 
         // initialize edge matrix, compute avg dist
@@ -281,7 +283,7 @@ class ACOModel {
 
                     this.bestPath = this.ants[a].tourPath;
 
-                    console.log("- - Updated min. distance: " + this.minDist);
+                    this.perfLog.push([epoch, this.minDist]);
 
                 }
 

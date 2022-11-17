@@ -1,6 +1,6 @@
 window.onload = initSpace;
 
-let cnv = null;
+let cnv = null, plt = null;
 
 let graph = null;
 
@@ -39,6 +39,10 @@ function initSpace() {
     // args are canvas reference, maxNodes
     graph = new NodeGraph(cnv, 16);
 
+    // initialize graph
+    plt = document.getElementById("acoResultPlot");
+    plt.height = 128;
+    plt.width = 512;
 
 
 
