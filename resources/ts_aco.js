@@ -81,27 +81,6 @@ class ACOModel {
         // div sum by N compared (N is number of edges in upper tri of matrix, N != n) to compute avg.
         this.avgDist /= (n * (n - 1) / 2);
 
-        console.log("sum dist = " + this.minDist);
-        console.log("avg dist = " + this.avgDist);
-
-    }
-
-    DEBUGPRINTPHERO() {
-
-        const n = this.edgeMatrix.length;
-
-        console.log("- - - PHEROMONE VALS:");
-
-        for (var r = 0; r < n; r++) {
-
-            for (var c = 0; c < n; c++) {
-
-                console.log(this.edgeMatrix[r][c].phero);
-
-            }
-            
-        }
-
     }
 
     // given an ant class, and using this.edgeMatrix, calculate weights for all valid edges,
@@ -283,25 +262,15 @@ class ACOModel {
 
                     this.bestPath = this.ants[a].tourPath;
 
-                    this.perfLog.push([epoch, this.minDist]);
-
                 }
 
             }
 
-        }
-
-        this.graph.clearDisp();
-
-        for (var e = 0; e < this.bestPath.length; e++) {
-
-            let A = this.bestPath[e].n1;
-            let B = this.bestPath[e].n2;
-
-            A.drawEdge(B, "pink");
+            this.perfLog.push([epoch, this.minDist]);
 
         }
 
+        return [this.bestPath, this.perfLog];
 
     }
 
