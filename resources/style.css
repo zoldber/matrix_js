@@ -112,6 +112,66 @@ body {
 
 }
 
+#paramAlpha {
+
+    font-size: 28px;
+    width: 128px;
+    padding: 8px;
+    text-align: left;
+    border-width: 1px;
+    color: orange;
+    border-color: orange;
+    background-color: rgb(15, 13, 27);
+    border-radius: 4px; 
+    border: solid;  
+
+}
+
+#paramBeta {
+
+    font-size: 28px;
+    width: 128px;
+    padding: 8px;
+    text-align: left;
+    border-width: 1px;
+    color: orange;
+    border-color: orange;
+    background-color: rgb(15, 13, 27);
+    border-radius: 4px;
+    border: solid;  
+
+}
+
+#paramRho {
+
+    font-size: 28px;
+    width: 128px;
+    padding: 8px;
+    text-align: left;
+    border-width: 1px;
+    color: orange;
+    border-color: orange;
+    background-color: rgb(15, 13, 27);
+    border-radius: 4px;
+    border: solid;  
+
+}
+
+#paramAntCount {
+
+    font-size: 28px;
+    width: 128px;
+    padding: 8px;
+    text-align: left;
+    border-width: 1px;
+    color: orange;
+    border-color: orange;
+    background-color: rgb(15, 13, 27);
+    border-radius: 4px;
+    border: solid;  
+
+}
+
 .results {
 
     text-align: center;

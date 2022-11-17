@@ -106,7 +106,7 @@ function simulate() {
         A = optimalPath[i].n1;
         B = optimalPath[i].n2;
 
-        A.drawEdge(B, "Aqua", 3);
+        A.drawEdge(B, "MediumAquamarine", 3);
 
     }
 
@@ -116,7 +116,7 @@ function simulate() {
 
         optimalPath[i].n1.drawNode("Orange");
 
-        optimalPath[i].n1.circleNode("Aqua");
+        optimalPath[i].n1.circleNode("MediumAquamarine");
 
     }
 

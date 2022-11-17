@@ -17,8 +17,6 @@ class Chart {
         this.y = plt.height;
         this.ctx = plt.getContext("2d");
 
-
-
     }
 
     feed (data) {
@@ -54,7 +52,7 @@ class Chart {
         
             this.ctx.lineWidth = 2;
         
-            this.ctx.strokeStyle = "aqua";
+            this.ctx.strokeStyle = "MediumAquamarine";
         
             this. ctx.lineTo(cX, cY);
     

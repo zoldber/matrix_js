@@ -48,7 +48,7 @@ class NodeStruct {
 
     labelNode(text) {
 
-        this.ctx.fillStyle = "aqua";
+        this.ctx.fillStyle = "MediumAquamarine";
 
         this.ctx.font = "12px Arial";
 
@@ -153,7 +153,7 @@ class NodeGraph {
             // connect to all previous nodes drawn in graph
             for (j = 0; j < i; j++) {
 
-                this.nodes[i].drawEdge(this.nodes[j], "purple", 1);
+                this.nodes[i].drawEdge(this.nodes[j], "Purple", 1);
 
             }
 
@@ -161,7 +161,7 @@ class NodeGraph {
 
         for (i = 0; i < this.nodes.length; i++) {
 
-            this.nodes[i].drawNode("orange");
+            this.nodes[i].drawNode("Orange");
 
         }
 
