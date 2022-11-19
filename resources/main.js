@@ -30,6 +30,7 @@ function initSpace() {
 
     graph = new NodeGraph(cnv);
     
+    // graph should init. with 5 nodes to keep things interesting / eliminate confusion
     for (var i = 0; i < 5; i++) this.addNode();
 
     // initialize graph
@@ -82,13 +83,15 @@ function resetPlot () {
 
 function simulate() {
 
-    graph.clearDisp();
-
     const model = new ACOModel(graph);
+
+    graph.clearDisp();
 
     params.update();
 
-    model.evaluate(params.alpha, params.beta, params.rho, params.numEpochs, params.numAnts);
+    model.evaluate(params);
+
+    //model.evaluate(params.alpha, params.beta, params.rho, params.numEpochs, params.numAnts);
 
     console.log("Completed " + params.numEpochs + " epochs with " + params.numAnts + " ants.");
 

@@ -68,7 +68,7 @@ class Params {
         }
 
         if(isNaN(this.rho)) {
-            this.rho = 0.1;
+            this.rho = 0.075;
         } else {
             this.rho = this.#bound(this.rho, 0.00001, 10);
         }

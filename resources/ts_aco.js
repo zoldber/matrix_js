@@ -181,31 +181,31 @@ class ACOModel {
     // IT SHOULDN'T BE USE FOR ANYTHING BUT FETCHING ant.choices[c], which
     // is the true index of the node in question
 
-    evaluate(alpha, beta, rho, numEpochs, numAnts) {
+    evaluate(params) {
 
-        this.alpha = alpha;
-        this.beta = beta;
-        this.rho = rho;
+        this.numAnts = params.numAnts;
+        this.numEpochs = params.numEpochs;
+        this.alpha = params.alpha;
+        this.beta = params.beta;
+        this.rho = params.rho;
 
         // epoch index
         // ant index
         // starting points generated via even distribution for each epoch
-        var epoch, a, sp = [];
-
-        var i, j, k;
+        var epoch, a;
 
         // note: this isn't the same as initializing the ants at the start of each epoch
-        for (a = 0; a < numAnts; a++) this.ants.push(new Ant(this.graph));
+        for (a = 0; a < this.numAnts; a++) this.ants.push(new Ant(this.graph));
 
         // run desired number of tours
-        for (epoch = 0; epoch < numEpochs; epoch++) {
+        for (epoch = 0; epoch < this.numEpochs; epoch++) {
 
-            sp = this.#genStartPoints(numAnts);
+            let sp = this.#genStartPoints(this.numAnts);
 
-            for (i = 0; i < this.nodes.length; i++) this.nodes[i].drawNode("orange");
+            this.nodes.forEach(node => { node.drawNode("Orange"); });
 
             // BEGIN ONE PASS {
-            for (a = 0; a < numAnts; a++) {
+            for (a = 0; a < this.numAnts; a++) {
                                 
                 this.ants[a].initAtNodeIndex(sp[a]);
                 
@@ -249,9 +249,9 @@ class ACOModel {
 
             this.#updateEdgeMatrixPheromones(this.rho);
 
-            for (a = 0; a < numAnts; a++) {
+            for (a = 0; a < this.numAnts; a++) {
 
-                this.ants[a].updateTourPheromones(this.minDist / numAnts);
+                this.ants[a].updateTourPheromones(this.minDist / this.numAnts);
 
                 if (this.ants[a].tourDist < this.minDist) {
 
@@ -259,7 +259,7 @@ class ACOModel {
 
                     this.bestPath = this.ants[a].tourPath;
 
-                    this.perfLog.push(new Point(((epoch * numAnts) + a), this.minDist));
+                    this.perfLog.push(new Point(((epoch * this.numAnts) + a), this.minDist));
 
                 }
 
