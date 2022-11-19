@@ -1,10 +1,15 @@
 window.onload = initSpace;
 
+window.MIN_NODE_NUM = 5;
+window.MAX_NODE_NUM = 32;
+
 let cnv = null, plt = null;
 
 let graph = null, chart = null;
 
 let nodeCounter = null;
+
+let params = null;
 
 function initSpace() {
 
@@ -13,33 +18,19 @@ function initSpace() {
     // initialize controls
     nodeCounter = document.getElementById("nodeCounter");
 
-    var nodeGenButton = document.getElementById("nodeGenButton");
-    var evalACOButton = document.getElementById("evalACOButton");
-    var nodeRstButton = document.getElementById("nodeRstButton");
-    var clrPlotButton = document.getElementById("clrPlotButton");
-    
-    if (nodeRstButton && nodeGenButton && evalACOButton) {
-
-        nodeGenButton.addEventListener("click", addNode);
-        evalACOButton.addEventListener("click", simulate);
-        nodeRstButton.addEventListener("click", resetGraph);
-        clrPlotButton.addEventListener("click", clearPlot);
-
-    } else {
-
-        console.log("Missing expected config button(s)");
-
-        return;
-
-    }
+    document.getElementById("nodeGenButton").addEventListener("click", addNode);
+    document.getElementById("evalACOButton").addEventListener("click", simulate);
+    document.getElementById("nodeRstButton").addEventListener("click", resetGraph);
+    document.getElementById("clrPlotButton").addEventListener("click", resetPlot);
 
     // initialize graph
     cnv = document.getElementById("nodeGraphCanvas");
     cnv.height = 512;
     cnv.width = 512;
 
-    // args are canvas reference, maxNodes
-    graph = new NodeGraph(cnv, 20);
+    graph = new NodeGraph(cnv);
+    
+    for (var i = 0; i < 5; i++) this.addNode();
 
     // initialize graph
     plt = document.getElementById("acoResultPlot");
@@ -48,11 +39,17 @@ function initSpace() {
 
     chart = new Chart(plt);
 
+    // initialize params
+    params = new Params(graph);
+    params.update();
+
 }
 
 function addNode() {
 
     if (graph.nodes.length < graph.maxNodes) {
+
+        graph.clearDisp();
 
         graph.genNewRandomized();
 
@@ -70,11 +67,13 @@ function resetGraph() {
 
     graph.clearDisp();
 
+    for (var i = 0; i < 5; i++) addNode();
+
     nodeCounter.innerHTML = "Nodes: " + graph.nodes.length;
 
 }
 
-function clearPlot () {
+function resetPlot () {
 
     plt.height = 128;
     plt.width = 512;
@@ -83,42 +82,31 @@ function clearPlot () {
 
 function simulate() {
 
-    if (graph.nodes.length < 4) {
+    graph.clearDisp();
 
-        console.log("Generate at least 4 nodes before computing");
-
-        return;
-
-    }
-    
     const model = new ACOModel(graph);
 
-    model.evaluate(1.0, 1.0, 0.1, 200, 8);
+    params.update();
+
+    model.evaluate(params.alpha, params.beta, params.rho, params.numEpochs, params.numAnts);
+
+    console.log("Completed " + params.numEpochs + " epochs with " + params.numAnts + " ants.");
 
     let optimalPath = model.bestPath;
 
     let performance = model.perfLog;
 
-    var A, B, i;
+    graph.drawAll();
 
-    for (i = 0; i < optimalPath.length; i++) {
+    optimalPath.forEach(edge => { edge.n1.drawEdge(edge.n2, "MediumAquamarine", 3); });
 
-        A = optimalPath[i].n1;
-        B = optimalPath[i].n2;
+    optimalPath.forEach(edge => {
 
-        A.drawEdge(B, "MediumAquamarine", 3);
-
-    }
-
-    for (i = 0; i < optimalPath.length; i++) {
+        edge.n1.drawNode("Orange");
         
-        // optimalPath[i].n1.labelNode(i);
+        edge.n1.circleNode("MediumAquamarine");
 
-        optimalPath[i].n1.drawNode("Orange");
-
-        optimalPath[i].n1.circleNode("MediumAquamarine");
-
-    }
+    });
 
     chart.feed(performance);
 

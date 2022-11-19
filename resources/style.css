@@ -32,19 +32,21 @@ body {
 
 }
 
-#debugHeader {
+.info {
 
-    color: greenyellow;
+    text-align: center;
+
+    color: orange;
 
 }
 
 /* GRAPHICAL ELEMENTS (NODES, EDGES ETC.) BELOW */
 
-.canvas {
+.display {
 
 
     text-align: center;
-    margin: 0px;
+    margin: auto;
 
 }
 
@@ -57,125 +59,76 @@ body {
 
 /* CONTROL ELEMENTS (COUNTS, PARAMETERS ETC.) BELOW */
 
-.controls {
+.interface {
 
     text-align: center;
     margin: auto;
 
 }
 
-#nodeGenButton {
+.buttonStd {
 
     cursor: pointer;
     width: 128px;
     padding: 8px;
-    text-align: center;
     background-color: orange;
     border-radius: 4px;
     border: none;
 
 }
 
-#evalACOButton {
+.buttonRst {
 
     cursor: pointer;
     width: 128px;
     padding: 8px;
-    text-align: center;
+    background-color: salmon;
+    border-radius: 4px;
+    border: none;
+
+}
+
+.buttonRun {
+
+    cursor: pointer;
+    width: 128px;
+    padding: 8px;
     background-color: mediumaquamarine;
     border-radius: 4px;
     border: none;
 
 }
 
-#nodeRstButton {
+.buttonStd:hover { background-color: rgb(255, 208, 0); }
 
-    cursor: pointer;
-    width: 128px;
+.buttonRst:hover { background-color: pink; }
+
+.buttonRun:hover { background-color: springgreen; }
+
+.paramEntry {
+
     padding: 8px;
+    width: 80px;
     text-align: center;
-    background-color: salmon;
-    border-radius: 4px;
     border: none;
+    color: orange;
+    background-color: rgb(50, 33, 99);
+    border-radius: 4px;
 
 }
 
-#clrPlotButton {
+.paramEntry:hover {
 
-    cursor: pointer;
-    width: 128px;
-    padding: 8px;
+    background-color: rgb(64, 42, 129);
+
+}
+
+.tableDynamic {
+ 
+    border: none;
     text-align: center;
-    background-color: salmon;
-    border-radius: 4px;
-    border: none;    
-
-}
-
-#paramAlpha {
-
-    font-size: 28px;
-    width: 128px;
-    padding: 8px;
-    text-align: left;
-    border-width: 1px;
-    color: orange;
-    border-color: orange;
-    background-color: rgb(15, 13, 27);
-    border-radius: 4px; 
-    border: solid;  
-
-}
-
-#paramBeta {
-
-    font-size: 28px;
-    width: 128px;
-    padding: 8px;
-    text-align: left;
-    border-width: 1px;
-    color: orange;
-    border-color: orange;
-    background-color: rgb(15, 13, 27);
-    border-radius: 4px;
-    border: solid;  
-
-}
-
-#paramRho {
-
-    font-size: 28px;
-    width: 128px;
-    padding: 8px;
-    text-align: left;
-    border-width: 1px;
-    color: orange;
-    border-color: orange;
-    background-color: rgb(15, 13, 27);
-    border-radius: 4px;
-    border: solid;  
-
-}
-
-#paramAntCount {
-
-    font-size: 28px;
-    width: 128px;
-    padding: 8px;
-    text-align: left;
-    border-width: 1px;
-    color: orange;
-    border-color: orange;
-    background-color: rgb(15, 13, 27);
-    border-radius: 4px;
-    border: solid;  
-
-}
-
-.results {
-
-    text-align: center;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
 
 }
 

@@ -10,10 +10,11 @@
     <script src="resources/main.js"></script>
     <script src="resources/ant.js"></script>
     <script src="resources/graph.js"></script>
+    <script src="resources/params.js"></script>
     <script src="resources/ts_aco.js"></script>
     <script src="resources/perf_log.js"></script>
 
-    <link rel="stylesheet" href="resources/style.css"> 
+    <link rel="stylesheet" href="resources/style.css">
 
     <title>GEIV</title>
 
@@ -28,30 +29,65 @@
         <br>
     </div>
 
-    <div class="canvas">
+    <div class="display">
         <canvas id="nodeGraphCanvas"></canvas>
     </div>
 
-    <div class="controls">
+    <div class="interface">
         <br>
-        <button id="nodeGenButton">ADD NODE</button>
-        <button id="evalACOButton">EVALUATE</button>
-        <button id="nodeRstButton">RESET</button>
-        <button id="clrPlotButton">CLR PLOT</button>
-        <br>
-        <br>
-        <hr size="1px" width="512" color="Orange">
-        <br>
-        <button id="paramAlpha">α :</button>
-        <button id="paramBeta">β :</button>
-        <button id="paramRho">ρ :</button>
-        <button id="paramAntCount">N :</button>
+        <button class="buttonStd" id="nodeGenButton">ADD NODE</button>
+        <button class="buttonRun" id="evalACOButton">EVALUATE</button>
+        <button class="buttonRst" id="nodeRstButton">RESET</button>
+        <button class="buttonRst" id="clrPlotButton">CLR PLOT</button>
+    </div>
+    
+    <br>
+    <hr size="1px" width="512" color="Orange">
+    <br>
+
+    <div class="interface">
+
+        <table class="tableDynamic">
+
+            <tr>
+                <th id="antCountPELabel">Ants</th>
+                <th id="epochCountPELabel">Epochs</th>
+                <th id="alphaPELabel">Alpha</th>
+                <th id="betaPELabel">Beta</th>
+                <th id="rhoPELabel">Rho</th>
+            </tr>
+            <tr>
+                <td><input class="paramEntry" id="antCountPE"></input></td>
+                <td><input class="paramEntry" id="epochCountPE"></input></td>
+                <td><input class="paramEntry" id="alphaPE"></input></td>
+                <td><input class="paramEntry" id="betaPE"></input></td>
+                <td><input class="paramEntry" id="rhoPE"></input></td>
+            </tr>
+            
+        </table>
 
     </div>
 
-    <div class="results">
+    <div class="display">
         <br>
+        <h3>Optimal Path Distance vs. Epoch</h3>
         <canvas id="acoResultPlot"></canvas>
+    </div>
+
+    <br>
+    <hr size="1px" width="512" color="Orange">
+    <br>
+
+    <div class="info">
+
+        <h3>ACO and the Use of Adaptive Pheromones:</h3>
+        <p style="width: 512px; margin-left: auto; margin-right: auto; text-align: left;">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+
     </div>
 
 </body>

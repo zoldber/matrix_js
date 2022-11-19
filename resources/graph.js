@@ -76,14 +76,14 @@ class NodeStruct {
 
 class NodeGraph {
 
-    constructor(cnv, maxNodes) {
+    constructor(cnv) {
 
         this.ctx = cnv.getContext("2d");
 
         this.w = cnv.width;
         this.h = cnv.height;
  
-        this.maxNodes = maxNodes;
+        this.maxNodes = window.MAX_NODE_NUM;
         this.nodes = [];
         
     }
