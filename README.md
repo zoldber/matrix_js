@@ -2,7 +2,11 @@
 A sandbox repo for web-based software implementations.
 Mostly just fun demos for my website that are simple enough to be executed and visualized in a webpage.
 
-Topics of interest (TODO list):
+![ACO_demo](resources/ACO_demo.png)
+
+Demo: Fully Connected Graph Traversal (Ant Colony Optimization)
+
+Topics of Interest and Project Milestones
 
 ## 1. Graph operations
 
